@@ -19,25 +19,14 @@ public class LoginManager : MonoBehaviour
         if(_textFeedback != null )
         _textFeedback.text = "";
 
-        _profilesCount = PlayerPrefs.GetInt("ProfilesCount", 0);
     }
-
-   /* public void EnterUsername()
-    {
-        _username = _usernameInputField.text;
-    }
-
-    public void EnterPassword()
-    {
-        _password = _passwordInputField.text;
-    }*/
 
     public void CheckProfile()
     {
+        _profilesCount = PlayerPrefs.GetInt("ProfilesCount", 0);
+
         string username = _usernameInputField.text.Trim();
         string password = _passwordInputField.text.Trim();
-
-        Debug.Log("Clicked Login button");
 
         for (int i = 0; i < _profilesCount; i++)
         {
@@ -47,13 +36,22 @@ public class LoginManager : MonoBehaviour
             if(savedUsername == username && savedPassword == password)
             {
                 Debug.Log("Profile Found");
+                _textFeedback.text = "Login Successfull!";
+                // Next Page Load
                 break;
             }
+
+            _usernameInputField.text = "";
+            _passwordInputField.text = "";
+            _textFeedback.text = "Account not found, try again!";
         }
     }
 
     public void CreationPage()
     {
+        _textFeedback.text = "";
+        _usernameInputField.text = "";
+        _passwordInputField.text = "";
         _loginPage.SetActive(false);
         _creationPage.SetActive(true);
     }

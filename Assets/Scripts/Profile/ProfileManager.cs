@@ -7,6 +7,9 @@ public class ProfileManager : MonoBehaviour
     [Header("Account Creation UI")]
     [SerializeField] private TMP_InputField _usernameField;
     [SerializeField] private TMP_InputField _passwordField;
+    [SerializeField] private TextMeshProUGUI _text;
+    [SerializeField] private GameObject _loginPage;
+    [SerializeField] private GameObject _createProfilePage;
 
     private int _profilesCount;
 
@@ -36,7 +39,7 @@ public class ProfileManager : MonoBehaviour
         PlayerPrefs.SetInt("ProfilesCount", _profilesCount);
         PlayerPrefs.Save();
 
-        Debug.Log($"Profilo creato: {username} (slot {index})");
+        _text.text = "Profile Created, go back to Login Page!";
     }
 
     public void GetProfiles()
@@ -55,5 +58,12 @@ public class ProfileManager : MonoBehaviour
         PlayerPrefs.DeleteAll();
         _profilesCount = 0;
         Debug.Log("Tutti i profili sono stati eliminati.");
+    }
+
+    public void ReturnLoginPage()
+    {
+        _text.text = "";
+        _createProfilePage.SetActive(false);
+        _loginPage.SetActive(true);
     }
 }
