@@ -3,6 +3,7 @@ using TMPro;
 using System.Collections.Generic;
 using System;
 using Random = UnityEngine.Random;
+using System.Collections;
 
 public class MathManager : MonoBehaviour
 {
@@ -15,9 +16,28 @@ public class MathManager : MonoBehaviour
     [Range(0,50)]
     [SerializeField] private int _maxNumb;
 
+    //Variables not serialized
     private int _itemsToSpawn;
     private int _result;
-    [SerializeField] List<int> _numbers = new List<int>();
+    private int _score;
+    public int Score { get { return _score; } }
+    private List<int> _numbers = new List<int>();
+    private float _maxTimer;
+    private float _currentTimer;
+    private Coroutine _generateQuestionRoutine;
+
+    private void OnEnable()
+    {
+        EventService.Instance.OnUpdateScore.AddListener(UpdateScore);
+        EventService.Instance.OnGenerateNewQuestion.AddListener(StartNewQuestion);
+    }
+
+    private void OnDisable()
+    {
+        EventService.Instance.OnUpdateScore.RemoveListener(UpdateScore);
+        EventService.Instance.OnGenerateNewQuestion.RemoveListener(StartNewQuestion);
+    }
+
 
     private void Start()
     {
@@ -41,6 +61,8 @@ public class MathManager : MonoBehaviour
         _secondN = Random.Range(_minNumb, _maxNumb);
         _secondNumber.text = _secondN.ToString();
         _result = _firstN + _secondN;
+
+        //Send Communication to DragBarrel to set required number
         EventService.Instance.OnSetAnswer.InvokeEvent(_result);
     }
 
@@ -61,7 +83,30 @@ public class MathManager : MonoBehaviour
             _numbers[Random.Range(0,_numbers.Count)] = _result;
         }
 
+        //Send Communication to GridSpawner to start spawning barrels based on numbers
         EventService.Instance.OnSpawnItems.InvokeEvent(_numbers);
+    }
+
+    public void UpdateScore()
+    {
+        _score ++;
+    }
+
+    public void StartNewQuestion()
+    {
+        if(_generateQuestionRoutine == null)
+        {
+            _generateQuestionRoutine = StartCoroutine(GenerateQuestionRoutine());
+        }
+    }
+
+    private IEnumerator GenerateQuestionRoutine()
+    {
+        yield return new WaitForSeconds(2f);
+        GenerateQuestion();
+        AssignNumbers();
+        EventService.Instance.OnUpdateFeedback.InvokeEvent("");
+        _generateQuestionRoutine = null;
     }
 }
 

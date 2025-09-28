@@ -6,17 +6,18 @@ public class DragBarrel : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDr
 {
     [SerializeField] private Image _image;
     [SerializeField] private bool _canDrag = true;
+    public bool canDrag { get { return _canDrag; } }
 
-    private Vector3 _startingPos;
+    [SerializeField] private Vector3 _startingPos;
 
-    private void Start()
-    {
-        _startingPos = transform.position;
-    }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        _image.raycastTarget = false;
+        if(_canDrag)
+        {
+            _startingPos = transform.localPosition;
+            _image.raycastTarget = false;
+        }
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -28,6 +29,16 @@ public class DragBarrel : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDr
     public void OnEndDrag(PointerEventData eventData)
     {
         _image.raycastTarget = true;
+        if(eventData.pointerEnter.TryGetComponent<DropBarrellArea>(out DropBarrellArea dropArea))
+        {
+            return;
+        }
+
+        _image.rectTransform.localPosition = _startingPos;
     }
 
+    public void SetDragStatus()
+    {
+        _canDrag = false;
+    }
 }

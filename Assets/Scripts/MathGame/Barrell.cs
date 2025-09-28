@@ -13,6 +13,4 @@ public class Barrell : MonoBehaviour
         string n = _numberText.text;
         _number = int.Parse(n);
     }
-    
-    
 }

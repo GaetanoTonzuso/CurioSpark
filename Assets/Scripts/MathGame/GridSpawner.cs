@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using TMPro;
+using System.Collections;
 
 public class GridSpawner : MonoBehaviour
 {
@@ -10,10 +11,11 @@ public class GridSpawner : MonoBehaviour
     public int ItemsToSpawn { get { return _itemsToSpawn; }}
     [SerializeField] private GameObject _parent;
 
+    private Coroutine _generateGridItemsRoutine;
+
     private void OnEnable()
     {
         EventService.Instance.OnSpawnItems.AddListener(SpawnItemsInGrid);
-        
     }
 
     private void OnDisable()
@@ -23,15 +25,37 @@ public class GridSpawner : MonoBehaviour
 
     private void SpawnItemsInGrid(List<int> list)
     {
-        for(int i = 0; i <= _itemsToSpawn; i++)
+        DestroyAllBarrells();
+        if(_generateGridItemsRoutine == null)
+            _generateGridItemsRoutine = StartCoroutine(GenerateRoutine(list));
+    }
+
+    private void GenerateGridItems(List<int> list)
+    {
+        for (int i = 0; i <= _itemsToSpawn; i++)
         {
-            GameObject barrell = Instantiate(_prefabToSpawn,transform.position,Quaternion.identity);
-            barrell.transform.SetParent(_parent.transform,true);
+            GameObject barrell = Instantiate(_prefabToSpawn, transform.position, Quaternion.identity);
+            barrell.transform.SetParent(_parent.transform, true);
             TextMeshProUGUI _textBarrel = barrell.GetComponentInChildren<TextMeshProUGUI>();
-            if ( _textBarrel != null )
+            if (_textBarrel != null)
             {
                 _textBarrel.text = list[i].ToString();
             }
+        }
+    }
+
+    private IEnumerator GenerateRoutine(List<int> list)
+    {
+        yield return new WaitForSeconds(0.1f);
+        GenerateGridItems(list);
+        _generateGridItemsRoutine = null;
+    }
+
+    private void DestroyAllBarrells()
+    {
+        foreach (Transform child in _parent.transform)
+        {
+            Destroy(child.gameObject);
         }
     }
 }
