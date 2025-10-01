@@ -24,6 +24,9 @@ public class EventService
     public EventController OnUpdateScore { get; private set; }
     public EventController <int> OnUpdateScoreUI { get; private set; }
     public EventController OnGenerateNewQuestion { get; private set; }
+    public EventController <int> OnEndGame{ get; private set; }
+    public EventController OnPauseGame { get; private set; }
+    public EventController OnUnpauseGame { get; private set; }
 
 
     public EventService()
@@ -35,5 +38,8 @@ public class EventService
         OnUpdateScore = new EventController();
         OnUpdateScoreUI = new EventController<int>();
         OnGenerateNewQuestion = new EventController();
+        OnEndGame = new EventController<int>();
+        OnPauseGame = new EventController();
+        OnUnpauseGame = new EventController();
     }
 }

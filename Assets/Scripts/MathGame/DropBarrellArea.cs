@@ -61,6 +61,7 @@ public class DropBarrellArea : MonoBehaviour, IDropHandler
             }
 
             //Communicate with GameManager and UI for new questions
+            if(!_gameManager.IsGameOver())
             EventService.Instance.OnGenerateNewQuestion.InvokeEvent();
 
         }
