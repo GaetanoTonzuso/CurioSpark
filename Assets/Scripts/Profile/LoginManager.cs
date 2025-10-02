@@ -1,6 +1,6 @@
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class LoginManager : MonoBehaviour
 {
@@ -37,6 +37,7 @@ public class LoginManager : MonoBehaviour
             {
                 Debug.Log("Profile Found");
                 _textFeedback.text = "Login Successfull!";
+                SceneManager.LoadSceneAsync(1);
                 // Next Page Load
                 break;
             }

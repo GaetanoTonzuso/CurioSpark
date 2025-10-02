@@ -58,6 +58,7 @@ public class DropBarrellArea : MonoBehaviour, IDropHandler
             {
                 //Send communication to UIMathGame
                 EventService.Instance.OnUpdateFeedback.InvokeEvent("Not Correct, answer is: " + _requiredNumber);
+                AudioManager.Instance.PlaySfxClip(1);
             }
 
             //Communicate with GameManager and UI for new questions

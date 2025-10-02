@@ -17,6 +17,7 @@ public class ProfileManager : MonoBehaviour
     {
         _profilesCount = PlayerPrefs.GetInt("ProfilesCount", 0);
         GetProfiles();
+        AudioManager.Instance.PlayAmbience(0);
     }
 
     public void CreateProfile()

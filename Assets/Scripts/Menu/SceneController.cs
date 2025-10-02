@@ -8,7 +8,7 @@ public class SceneController : MonoBehaviour
 
     public void LoadScene(int scene)
     {
-        SceneManager.LoadScene(scene);
+        SceneManager.LoadSceneAsync(scene);
     }
 
     public void PauseScreen()

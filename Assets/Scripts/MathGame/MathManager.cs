@@ -68,6 +68,8 @@ public class MathManager : MonoBehaviour
         {
             _timerRoutine = StartCoroutine(StartTimer());
         }
+
+        AudioManager.Instance.PlayAmbience(1);
     }
 
     private void GenerateQuestion()
@@ -108,6 +110,7 @@ public class MathManager : MonoBehaviour
     public void UpdateScore()
     {
         _score ++;
+        AudioManager.Instance.PlaySfxClip(0);
     }
 
     public void StartNewQuestion()
