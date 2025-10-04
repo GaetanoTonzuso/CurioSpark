@@ -1,75 +1,86 @@
 using NUnit.Framework;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class TileGameManager : MonoBehaviour
 {
-    [SerializeField] private Sprite[] _icons;
-    [SerializeField] private string[] _names;
-    private int randomIndex;
+    //Variables
 
-    [Header("Grid Settings")]
-    [SerializeField] private GameObject _grid;
-    [SerializeField] private GameObject _item;
-    [SerializeField] private int _itemsToSpawn;
+    private int _currentReveleadItems;
+    public int CurrentRevealedItems { get { return _currentReveleadItems; } }
+
+    private bool _isChecking;
+    private Coroutine _checkingCoroutine;
+
+    [SerializeField] private float _checkingTime = 3f;
+    [SerializeField] private List<TileItem> _namesRevealed = new List<TileItem>();
+
+    //Variables
+
+    private void OnEnable()
+    {
+        EventService.Instance.OnUncoverItem.AddListener(OnUncoverItem);
+    }
+
+    private void OnDisable()
+    {
+        EventService.Instance.OnUncoverItem.RemoveListener(OnUncoverItem);
+    }
 
     private void Start()
     {
-        GenerateGridItems();
+        AudioManager.Instance.PlayAmbience(1);
     }
 
-    private void GenerateGridItems()
+    private void OnUncoverItem(TileItem item)
     {
-        List<Sprite> spritePool;
-        List<string> namePool;
-        GeneratePools(_itemsToSpawn, out spritePool, out namePool);
+        //if (_isChecking) return;
 
-        for (int i = 0; i < _itemsToSpawn; ++i)
+        if(_checkingCoroutine == null)
+        _checkingCoroutine = StartCoroutine(CheckRoutine(item));
+        
+    }
+
+    private void CleanList()
+    {
+        _currentReveleadItems = 0;
+        _namesRevealed.Clear();
+    }
+
+    private IEnumerator CheckRoutine(TileItem item)
+    {
+        _currentReveleadItems++;
+        _namesRevealed.Add(item);
+
+        for (int i = 0; i < _namesRevealed.Count; i++)
         {
-            GameObject itemClone = Instantiate(_item, _grid.transform.position,Quaternion.identity);
-            itemClone.transform.SetParent(_grid.transform, true);
-            TileItem tile = itemClone.GetComponent<TileItem>();
-            if (tile != null)
+            for (int j = i + 1; j < _namesRevealed.Count; j++)
             {
-                tile.SetItemInfo(spritePool[i], namePool[i]);
+                if (_namesRevealed[j].Name == _namesRevealed[i].Name)
+                {
+                    Debug.Log("Found same items");
+                    EventService.Instance.OnItemsMatch.InvokeEvent();
+                    foreach (TileItem itemTile in _namesRevealed)
+                    {
+                        itemTile.OnItemMatch();
+                    }
+                    yield return new WaitForSeconds(_checkingTime);
+                    CleanList();
+                }
+
+                else
+                {
+                    Debug.Log("Items not matching");
+                    EventService.Instance.OnItemCover.InvokeEvent();
+
+                    //Reset Items Uncovered and Clean List
+                    yield return new WaitForSeconds(_checkingTime);
+                    CleanList();
+                }
             }
+            _checkingCoroutine = null;
         }
     }
-
-    private void GeneratePools(int itemsToSpawn, out List<Sprite> spritePool, out List<string> namePool)
-    {
-        spritePool = new List<Sprite>();
-        namePool = new List<string>();
-
-        int pairs = itemsToSpawn / 2;
-
-        for (int i = 0; i < pairs; i++)
-        {
-            int index = Random.Range(0, _icons.Length);
-
-            spritePool.Add(_icons[index]);
-            spritePool.Add(_icons[index]);
-
-            namePool.Add(_names[index]);
-            namePool.Add(_names[index]);
-        }
-
-        // shuffle
-        for (int i = 0; i < spritePool.Count; i++)
-        {
-            int randomIndex = Random.Range(i, spritePool.Count);
-
-            // change sprite
-            Sprite tempSprite = spritePool[i];
-            spritePool[i] = spritePool[randomIndex];
-            spritePool[randomIndex] = tempSprite;
-
-            // change name on same order
-            string tempName = namePool[i];
-            namePool[i] = namePool[randomIndex];
-            namePool[randomIndex] = tempName;
-        }
-    }
-
 }

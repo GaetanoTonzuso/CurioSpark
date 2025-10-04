@@ -3024,6 +3024,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1463032606}
   - component: {fileID: 1463032607}
+  - component: {fileID: 1463032608}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -3058,19 +3059,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6aa9c36fe9264de4dbeffd9314e24178, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1463032608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1463032605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7adaf20c53bfb934db749a31e175e608, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   _icons:
-  - {fileID: -977699566, guid: 6e708d51fd30b7840bf249caa23e1248, type: 3}
   - {fileID: -2056086119, guid: 6e708d51fd30b7840bf249caa23e1248, type: 3}
   - {fileID: 1584439445, guid: 6e708d51fd30b7840bf249caa23e1248, type: 3}
   - {fileID: 973335614, guid: 6e708d51fd30b7840bf249caa23e1248, type: 3}
+  - {fileID: -977699566, guid: 6e708d51fd30b7840bf249caa23e1248, type: 3}
   _names:
-  - Horse
   - Chicken
   - Pig
   - Cow
+  - Horse
   _grid: {fileID: 1146879635}
   _item: {fileID: 2978373074242280804, guid: 655e03c7d0f901b43a02250138f4c0dc, type: 3}
-  _itemsToSpawn: 22
+  _itemsToSpawn: 24
 --- !u!1 &1466960440
 GameObject:
   m_ObjectHideFlags: 0

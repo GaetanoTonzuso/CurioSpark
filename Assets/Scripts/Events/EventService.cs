@@ -28,6 +28,11 @@ public class EventService
     public EventController OnPauseGame { get; private set; }
     public EventController OnUnpauseGame { get; private set; }
 
+    //Tile Game
+    public EventController<TileItem> OnUncoverItem {  get; private set; }
+    public EventController OnItemCover {  get; private set; }
+    public EventController OnItemsMatch { get; private set; }
+
 
     public EventService()
     {
@@ -41,5 +46,8 @@ public class EventService
         OnEndGame = new EventController<int>();
         OnPauseGame = new EventController();
         OnUnpauseGame = new EventController();
+        OnUncoverItem = new EventController<TileItem>();
+        OnItemCover = new EventController();
+        OnItemsMatch = new EventController();
     }
 }
