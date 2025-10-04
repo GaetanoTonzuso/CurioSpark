@@ -133,7 +133,6 @@ public class MathManager : MonoBehaviour
         }
 
         // End Screen
-        Debug.Log("EndGame");
         EventService.Instance.OnEndGame.InvokeEvent(_score);
 
         //Save LastScore
@@ -161,7 +160,6 @@ public class MathManager : MonoBehaviour
 
     private void PauseGame()
     {
-        Debug.Log("Paused Game");
         Time.timeScale = 0f;
     }
 

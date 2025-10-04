@@ -42,15 +42,18 @@ public class GridTile : MonoBehaviour
 
         int pairs = itemsToSpawn / 2;
 
-        for (int i = 0; i < pairs; i++)
+        while(spritePool.Count < itemsToSpawn)
         {
             int index = Random.Range(0, _icons.Length);
 
-            spritePool.Add(_icons[index]);
-            spritePool.Add(_icons[index]);
+            if (!spritePool.Contains(_icons[index]))
+            {
+                spritePool.Add(_icons[index]);
+                spritePool.Add(_icons[index]);
 
-            namePool.Add(_names[index]);
-            namePool.Add(_names[index]);
+                namePool.Add(_names[index]);
+                namePool.Add(_names[index]);
+            }
         }
 
         // shuffle

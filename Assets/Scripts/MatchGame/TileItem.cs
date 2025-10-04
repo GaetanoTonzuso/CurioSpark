@@ -45,7 +45,7 @@ public class TileItem : MonoBehaviour
 
     public void UncoverItem()
     {
-        if(_tileGameManager.CurrentRevealedItems < _pairItems && !_isUncovered)
+        if(_tileGameManager.CurrentRevealedItems < _pairItems && !_isUncovered && !_tileGameManager.IsGameOver)
         {
             _cover.gameObject.SetActive(false);
             _isUncovered = true;
