@@ -34,6 +34,9 @@ public class EventService
     public EventController OnItemsMatch { get; private set; }
     public EventController OnGameOver { get; private set; }
 
+    //Alphabet Game
+    public EventController <List<string>,int> OnLetterAssigned { get; private set; }
+
 
     public EventService()
     {
@@ -53,5 +56,9 @@ public class EventService
         OnItemCover = new EventController();
         OnItemsMatch = new EventController();
         OnGameOver = new EventController();
+
+        //Alphabet Game Events
+        OnLetterAssigned = new EventController<List<string>, int>();
+        
     }
 }

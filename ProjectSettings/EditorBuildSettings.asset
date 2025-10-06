@@ -17,6 +17,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MatchGame.unity
     guid: 571eb688b483a014088bff69f3ef6135
+  - enabled: 1
+    path: Assets/Scenes/AlphabetGame.unity
+    guid: 4a445a9e915ed1e4dae2187fa7ea4730
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

@@ -31,8 +31,14 @@ public class SceneController : MonoBehaviour
         _pauseScreen.SetActive(false);
     }
 
+    public void QuitGame()
+    {
+        Application.Quit(); 
+    }
+
     private void UpdateLastScore()
     {
+        if (_lastScore != null)
         _lastScore.text = "Last Score: " + PlayerPrefs.GetInt("LastScore");
     }
 

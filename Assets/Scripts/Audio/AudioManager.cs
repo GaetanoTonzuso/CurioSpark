@@ -45,6 +45,15 @@ public class AudioManager : MonoBehaviour
         _sfxAudioSource.Play();
     }
 
+    public void PlaySfxClip(AudioClip _clip)
+    {
+        if(_clip != null)
+        {
+            _sfxAudioSource.clip = _clip;
+            _sfxAudioSource.Play();
+        }
+    }
+
     public void PlayAmbience(int value)
     {
         if(value < 0 || value >= _ambienceClip.Length)
